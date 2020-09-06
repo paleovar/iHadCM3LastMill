@@ -143,20 +143,20 @@ for(cluster in 1:9){
 
 line_names = 1
 col_ensemble = "#004F00"
-cex_text = 1
+cex_text = 1.3
 
 col_closest <- c("#6A51A3", "#9E9AC8", "#CBC9E2", "#F2E6F7")
 col_offset <- c("#CB181D", "#FB6A4A", "#FCAE91", "#FEE5D9")
 for(plot in 1:1){
-  pdf(file = paste0("Sup_Plots/SF_Network_boxplot_extended.pdf"), height= PLOTTING_VARIABLES$HEIGHT, width = 1.5*PLOTTING_VARIABLES$WIDTH)
-  par(mar = c(5,11,1,2))
-  plot(c(-1,1), c(1,24), type = "n", axes = FALSE, xlab = "", ylab = "" )
+  pdf(file = paste0("Sup_Plots/SF_Network_boxplot_extended.pdf"), height= 1.5*PLOTTING_VARIABLES$HEIGHT, width = 1.5*PLOTTING_VARIABLES$WIDTH)
+  par(oma = c(1,9,0,0), mar = c(8,1,1,1))
+  plot(c(-1,1), c(1,19), type = "n", axes = FALSE, xlab = "", ylab = "" )
   abline(v=0)
-  position <- list(cluster6 = c(19, 18.5, 18, 17.5, 17, 16.5, 16)+5,
-                   cluster2 = c(15, 14.5, 14, 13.5, 13, 12.5, 12)+4,
-                   cluster3 = c(11, 10.5, 10,  9.5,  9,  8.5, 8)+3,
-                   cluster1 = c( 7,  6.5,  6,  5.5,  5,  4.5, 4)+2,
-                   cluster5 = c( 4,  3.5,  3,  2.5,  2,  1.5, 1))
+  position <- list(cluster6 = c(15, 14.5, 14, 13.5, 13)+4,
+                   cluster2 = c(12, 11.5, 11, 10.5, 10)+3,
+                   cluster3 = c( 9,  8.5,  8,  7.5, 7)+2,
+                   cluster1 = c( 6,  5.5,  5,  4.5, 4)+1,
+                   cluster5 = c( 3,  2.5,  2,  1.5, 1))
   text <- list(cluster1 = "India", cluster2 = "SouthAm", cluster3 = "Europe", cluster4 = "Africa", 
                cluster5 = "China", cluster6 = "NorthAm", cluster7 = "Arabia", cluster8 = "NZ", cluster9 = "SE Asia")
   cluster_list <- as.tibble(DATA_past1000$CAVES$cluster_list) %>% group_by(cluster_id) %>% count() %>% filter(n>1)
@@ -168,34 +168,27 @@ for(plot in 1:1){
   for(cluster in  c(6,2,3,1,5)){
     
     if(cluster == 6){
-      boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$C_rec), add = TRUE, at = position[[paste0("cluster",cluster)]][1] ,boxwex = 1, names = "n", horizontal = T, outline = F) 
+      boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$C_rec), add = TRUE, at = position[[paste0("cluster",cluster)]][1] ,boxwex = 1, names = "n", horizontal = T, outline = F, cex.axis = cex_text) 
     }else{
       boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$C_rec), add = TRUE, at = position[[paste0("cluster",cluster)]][1] ,boxwex = 1, names = "n", horizontal = T, axes = F, outline = F) 
     }
     
     boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$closest$C_rec), add = TRUE, at = position[[paste0("cluster",cluster)]][2] , boxwex = 1, names = "n", horizontal = T, col = col_closest[1], axes = F, outline = F)
-    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$closest$C_rec_gauss), add = TRUE, at = position[[paste0("cluster",cluster)]][3] , boxwex = 1, names = "n", horizontal = T, col = col_closest[2], axes = F, outline = F)
-    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$closest$C_rec_ensemble), add = TRUE, at = position[[paste0("cluster",cluster)]][4] , boxwex = 1, names = "n", horizontal = T, col = col_closest[4], axes = F, outline = F)
+    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$closest$C_rec_ensemble), add = TRUE, at = position[[paste0("cluster",cluster)]][3] , boxwex = 1, names = "n", horizontal = T, col = col_closest[4], axes = F, outline = F)
     
-    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$smallest_offset$C_rec), add = TRUE, at = position[[paste0("cluster",cluster)]][5] , boxwex = 1, names = "n", horizontal = T, col = col_offset[1], axes = F, outline = F)
-    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$smallest_offset$C_rec_gauss), add = TRUE, at = position[[paste0("cluster",cluster)]][6] , boxwex = 1, names = "n", horizontal = T, col = col_offset[2], axes = F, outline = F)
-    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$smallest_offset$C_rec_ensemble), add = TRUE, at = position[[paste0("cluster",cluster)]][7] , boxwex = 1, names = "n", horizontal = T, col = col_offset[4], axes = F, outline = F)
+    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$smallest_offset$C_rec), add = TRUE, at = position[[paste0("cluster",cluster)]][4] , boxwex = 1, names = "n", horizontal = T, col = col_offset[1], axes = F, outline = F)
+    boxplot(as.numeric(NETWORK_TUNING$CLUSTER[[paste0("CLUSTER",cluster)]]$smallest_offset$C_rec_ensemble), add = TRUE, at = position[[paste0("cluster",cluster)]][5] , boxwex = 1, names = "n", horizontal = T, col = col_offset[4], axes = F, outline = F)
     
-    mtext(side = 2, paste0("c",cluster_number[cluster],"/",text[[cluster]]," [",cluster_list$n[cluster],"]"), cex = 1, line = line_names, las = 1, col = "black", at = position[[paste0("cluster",cluster)]][1]-1)
+    mtext(side = 2, paste0("c",cluster_number[cluster],"/",text[[cluster]]," [",cluster_list$n[cluster],"]"), cex = cex_text, line = line_names, las = 1, col = "black", at = position[[paste0("cluster",cluster)]][1]-1)
     
   }
   
-  mtext(side = 1, text = "Cross-correlation between entity-pairs", cex = cex_text, col = "black", line = 1.7)
+  mtext(side = 1, text = "Cross-correlation between entity-pairs", cex = cex_text, col = "black", line = 2.2)
   
-  legend(-1.075,-2.3,xpd = T,inset=-0.2, bty='n', x.intersp=0.5,text.width=c(1,0.25,0.4, 0.37),
-         c("record", "closest record","cl.record 100yr t.sc","closest record ensemble"), fill=c("white", col_closest[1],col_closest[2],col_closest[4]), horiz=TRUE, cex=1)
-  legend(-1.075,-3.3,xpd = T,inset=-0.2, bty='n', x.intersp=0.5,text.width=c(1,0.25,0.4, 0.37),
-         c("offset record","offset record 100yr t.sc","offset record ensemble"), fill=col_offset, horiz=TRUE, cex=1)
-  # 
-  # legend(-1.075,-2.2,xpd = T,inset=-0.2, bty='n', x.intersp=0.5,text.width=c(1,0.3,0.5),
-  #        c("records", "records 100yr t.sc", "records tuned"), fill = c("white", "grey", col_ensemble), horiz = TRUE, cex = cex_text)
-  # legend(-1.075, -3.2,xpd = T,inset=-0.2, bty='n', x.intersp=0.5,text.width=c(1,0.3),
-  #        c("simulation", "simulation 100yr t.sc"), fill = c("dodgerblue3", adjustcolor("dodgerblue3", alpha.f = 0.5)), horiz=TRUE, cex=cex_text)
+  legend(-1.075,-1.5,xpd = T,inset=-0.2, bty='n', x.intersp=0.5,text.width=c(1,0.25,0.4, 0.37),
+         c("original", "proximity", "proximity ensemble"), fill=c("white", col_closest[1],col_closest[4]), horiz=TRUE, cex=cex_text)
+  legend(-1.075,-2.5,xpd = T,inset=-0.2, bty='n', x.intersp=0.5,text.width=c(1,0.25,0.4, 0.37),
+         c("offset record","offset record ensemble"), fill=c(col_offset[1],col_offset[3]), horiz=TRUE, cex=cex_text)
 
   
   dev.off()

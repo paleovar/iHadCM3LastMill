@@ -177,7 +177,7 @@ for(cluster in c(6,2,3,5)){
     lines(c(plot_data$box_map[1], plot_data$box_map[1]), c(plot_data$box_map[3],  plot_data$box_map[4]), col = "black", lwd = "2")
     lines(c(plot_data$box_map[2], plot_data$box_map[2]), c(plot_data$box_map[3],  plot_data$box_map[4]), col = "black", lwd = "2")
     
-    mtext(" (a)", side = 3, adj = 0, cex = 1.5, col = "black", line = -2)
+    mtext(" (a) iHadCM3", side = 3, adj = 0, cex = 1.5, col = "black", line = -2)
     mtext("lat (° N)", side = 2, cex = 1, col = "black", line = 2)
     mtext("long (° E)", side = 1, cex = 1, col = "black", line = 2)
     
@@ -216,7 +216,7 @@ for(cluster in c(6,2,3,5)){
     lines(c(plot_data$box_map[1], plot_data$box_map[2]), c(plot_data$box_map[4], plot_data$box_map[4]), col = "black", lwd = "2")
     lines(c(plot_data$box_map[1], plot_data$box_map[1]), c(plot_data$box_map[3],  plot_data$box_map[4]), col = "black", lwd = "2")
     lines(c(plot_data$box_map[2], plot_data$box_map[2]), c(plot_data$box_map[3],  plot_data$box_map[4]), col = "black", lwd = "2")
-    mtext(" (c)", side = 3, adj = 0, cex = 1.5, col = "black", line = -2)
+    mtext(" (c) Speleo", side = 3, adj = 0, cex = 1.5, col = "black", line = -2)
     mtext("lat (° N)", side = 2, cex = 1, col = "black", line = 2)
     mtext("long (° E)", side = 1, cex = 1, col = "black", line = 2)
     

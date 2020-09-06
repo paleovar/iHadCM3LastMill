@@ -9,7 +9,7 @@ filter <- list(
 )
 
 COLZ <- c("#1A2254", "#0A4296", "#278BCE","#91002B", "#BD6B73", "black")
-cex_text = 1.3
+cex_text = 1.7
 
 for(var in c("ISOT", "ITPC")){
   pdf(file = paste0("Sup_Plots/SF_AllSpectra_1_",var,".pdf"), width = 21, height = 29.7)
@@ -63,7 +63,7 @@ for(var in c("ISOT", "ITPC")){
     LLines(LogSmooth(SPECTRA$RECORDS[[paste0("ENTITY",entity)]]), col = COLZ[6], lw = 3)
     #text(0.02, 0.0005, "Records", col = "black")
     legend("bottomleft", legend = c("HadCM3 (full)", paste0(" ...  ",filter[[var]][1],"y filter"), paste0(" ...  ",filter[[var]][2],"y filter"), "HadCM3 (down-sampled)", paste0(" ...  ",filter[[var]][3],"y filter"), "Record"), 
-           col = c(COLZ[1],COLZ[2],COLZ[3],COLZ[4],COLZ[5],COLZ[6]), lwd = c(1,1,1,1,1,2), lty = c(1,1,1,1,1,1), bty = "n", cex = cex_text)
+           text.col = c(COLZ[1],COLZ[2],COLZ[3],COLZ[4],COLZ[5],COLZ[6]), bty = "n", cex = cex_text)
     
     text(0.5,200, paste0("ENTITY ", entity), adj = 1, cex = cex_text)
     if(var == "ISOT"){
@@ -72,6 +72,20 @@ for(var in c("ISOT", "ITPC")){
     if(var == "ITPC"){
       text(0.5, 500, TeX("HadCM3: prec-weighted $\\delta^{18}O$"), adj = 1, cex = cex_text)
     }
+    
+    if(entity_number<27){
+      LETTER <- letters[entity_number]  
+    }else if(entity_number < 53){
+      LETTER <- paste0("a", letters[entity_number-26])
+    }else if(entity_number < 79){
+      LETTER <- paste0("b", letters[entity_number-52])
+    }else if(entity_number < 105){
+      LETTER <- paste0("c", letters[entity_number-78])
+    }else{
+      LETTER <- paste0("d", letters[entity_number-104])
+    }
+    
+    mtext(side = 3, at = 1/250, paste0(LETTER,")"), line = -1.7, cex = cex_text)
   }
   
   
@@ -124,7 +138,7 @@ for(var in c("ISOT", "ITPC")){
     LLines(LogSmooth(SPECTRA$RECORDS[[paste0("ENTITY",entity)]]), col = COLZ[6], lw = 3)
     #text(0.02, 0.0005, "Records", col = "black")
     legend("bottomleft", legend = c("HadCM3 (full)", paste0(" ...  ",filter[[var]][1],"y filter"), paste0(" ...  ",filter[[var]][2],"y filter"), "HadCM3 (down-sampled)", paste0(" ...  ",filter[[var]][3],"y filter"), "Record"), 
-           col = c(COLZ[1],COLZ[2],COLZ[3],COLZ[4],COLZ[5],COLZ[6]), lwd = c(1,1,1,1,1,2), lty = c(1,1,1,1,1,1), bty = "n", cex = cex_text)
+           text.col = c(COLZ[1],COLZ[2],COLZ[3],COLZ[4],COLZ[5],COLZ[6]), bty = "n", cex = cex_text)
     
     text(0.5,200, paste0("ENTITY ", entity), adj = 1, cex = cex_text)
     if(var == "ISOT"){
@@ -133,6 +147,20 @@ for(var in c("ISOT", "ITPC")){
     if(var == "ITPC"){
       text(0.5, 500, TeX("HadCM3: prec-weighted $\\delta^{18}O$"), adj = 1, cex = cex_text)
     }
+    
+    if(entity_number<27){
+      LETTER <- letters[entity_number]  
+    }else if(entity_number < 53){
+      LETTER <- paste0("a", letters[entity_number-26])
+    }else if(entity_number < 79){
+      LETTER <- paste0("b", letters[entity_number-52])
+    }else if(entity_number < 105){
+      LETTER <- paste0("c", letters[entity_number-78])
+    }else{
+      LETTER <- paste0("d", letters[entity_number-104])
+    }
+    
+    mtext(side = 3, at = 1/250, paste0(LETTER,")"), line = -1.7, cex = cex_text)
   }
   
   

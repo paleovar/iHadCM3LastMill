@@ -15,12 +15,12 @@ library(latex2exp)
 ## PLOT
 
 COLZ <- c("black", "#1A2254", "#0A4296", "#278BCE","#91002B", "#BD6B73", "black")
-cex_text = 1
+cex_text = 1.3
 
 var = "ITPC"
 
 cairo_pdf(file = paste0("Sup_Plots/SF_TS_1-54_",var,".pdf"), width = 21, height = 29.7)
-par(mfrow=c(9,6),oma = c(4,3,0,0) + 0.1,mar = c(0,0,1,1) + 0.1)
+par(mfrow=c(9,6),oma = c(4,5,0,0) + 0.1,mar = c(0,0,1,1) + 0.1)
 for(ii in 1:54){
   entity = DATA_past1000$CAVES$entity_info$entity_id[mask_mean][ii]
   data_rec <- DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
@@ -34,8 +34,8 @@ for(ii in 1:54){
          ylab = "",
          xaxt = "n",
          xlab = "", 
-         lwd = 2,panel.first = grid())
-    mtext("d18O in [‰]", side = 2, line= 2, cex = 0.8)
+         lwd = 2,panel.first = grid(), cex.axis = cex_text*1.5)
+    mtext("d18O in [‰]", side = 2, line= 3, cex = cex_text)
     
   }else{
     plot(data_rec$interp_age, data_rec$d18O_measurement, 
@@ -66,9 +66,21 @@ for(ii in 1:54){
     mtext("years BP", side = 1, line= 3, cex = 0.8)
   }
   
+  if(ii<27){
+    LETTER <- letters[ii]  
+  }else if(ii < 53){
+    LETTER <- paste0("a", letters[ii-26])
+  }else if(ii < 79){
+    LETTER <- paste0("b", letters[ii-52])
+  }else if(ii < 105){
+    LETTER <- paste0("c", letters[ii-78])
+  }else{
+    LETTER <- paste0("d", letters[ii-104])
+  }
   
-  legend("bottomleft", legend = c(paste0("Entity ", entity," d18O"), paste0("Entity ", entity," dweq"), "HadCM3 down-sampled"), 
-         col = c(COLZ[1],COLZ[3],COLZ[6]), lwd = c(2,2), lty = c(1,1), bty = "n", cex = cex_text)
+  mtext(side = 3, at = 50, paste0(LETTER,")"), line = -1.7, cex = cex_text)
+  legend("bottomleft", legend = c(paste0("eID ", entity," d18O"), paste0("eID ", entity," dweq"), "iHadCM3 ds"), 
+         text.col = c(COLZ[1],COLZ[3],COLZ[5]), bty = "n", cex = cex_text*1.5)
   
 }
 
@@ -77,8 +89,8 @@ for(ii in 1:54){
 dev.off()
 
 cairo_pdf(file = paste0("Sup_Plots/SF_TS_55-106_",var,".pdf"), width = 21, height = 29.7)
-par(mfrow=c(9,6),oma = c(4,3,0,0) + 0.1,mar = c(0,0,1,1) + 0.1)
-for(ii in 55:106){
+par(mfrow=c(9,6),oma = c(4,4,0,0) + 0.1,mar = c(0,0,1,1) + 0.1)
+for(ii in 55:104){
   entity = DATA_past1000$CAVES$entity_info$entity_id[mask_mean][ii]
   data_rec <- DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
   site = DATA_past1000$CAVES$entity_info$site_id[DATA_past1000$CAVES$entity_info$entity_id == entity]
@@ -91,8 +103,8 @@ for(ii in 55:106){
          ylab = "",
          xaxt = "n",
          xlab = "", 
-         lwd = 2,panel.first = grid())
-    mtext("d18O in [‰]", side = 2, line= 2, cex = 0.8)
+         lwd = 2,panel.first = grid(), cex.axis = cex_text*1.5)
+    mtext("d18O in [‰]", side = 2, line= 3, cex = cex_text)
     
   }else{
     plot(data_rec$interp_age, data_rec$d18O_measurement, 
@@ -117,15 +129,27 @@ for(ii in 55:106){
                       order.by = data_rec$interp_age), tsc.in = 100)$Xsmooth, 
         col = COLZ[6], lw = 2)
   
-  if(ii %in% c(101,102,103,104,105,106)){
+  if(ii %in% c(99,100,101,102,103,104)){
     axis(1,at=seq(0,1100,by=200),labels=FALSE,col="black")
     mtext(side=1,at=seq(0,1100,by=200),seq(0,1100,by=200),line = 1.5, cex=cex_text,col="black")
-    mtext("years BP", side = 1, line= 3, cex = 0.8)
+    mtext("years BP", side = 1, line= 3, cex = cex_text)
   }
   
+  if(ii<27){
+    LETTER <- letters[ii]  
+  }else if(ii < 53){
+    LETTER <- paste0("a", letters[ii-26])
+  }else if(ii < 79){
+    LETTER <- paste0("b", letters[ii-52])
+  }else if(ii < 105){
+    LETTER <- paste0("c", letters[ii-78])
+  }else{
+    LETTER <- paste0("d", letters[ii-104])
+  }
   
-  legend("bottomleft", legend = c(paste0("Entity ", entity," d18O"), paste0("Entity ", entity," dweq"), "HadCM3 down-sampled"), 
-         col = c(COLZ[1],COLZ[3],COLZ[6]), lwd = c(2,2), lty = c(1,1), bty = "n", cex = cex_text)
+  mtext(side = 3, at = 50, paste0(LETTER,")"), line = -1.7, cex = cex_text)
+  legend("bottomleft", legend = c(paste0("eID ", entity," d18O"), paste0("eID ", entity," dweq"), "iHadCM3 ds"), 
+         text.col = c(COLZ[1],COLZ[3],COLZ[5]), bty = "n", cex = cex_text*1.5)
   
 }
 

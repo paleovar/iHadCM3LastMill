@@ -56,7 +56,7 @@ for(run in c("a", "b", "c")){
 
 
 #################################################
-pdf(file = paste0("Sup_Plots/SF5_SeasonTuning_histo.pdf"), width = 1.3*6, height = 2*PLOTTING_VARIABLES$HEIGHT/1.5)
+pdf(file = paste0("Sup_Plots/SF_SeasonTuning_histo.pdf"), width = 1.3*6, height = 2*PLOTTING_VARIABLES$HEIGHT/1.5)
 par(mfrow=c(2,1),oma = c(1,3,0,0) + 0.1,mar = c(3,1,0,1) + 0.1)
 hist(c_yearly$TEMP[p_yearly$TEMP<0.1], 
      breaks = 9, border = "white", prob = TRUE, 
@@ -77,8 +77,8 @@ lines(c(median(c_season$TEMP[p_season$TEMP<0.1], na.rm = T),
       lwd = 2, col = "#B2182B", lty = 2)
 
 mtext(text = "density",side = 2,line = 2.5, cex = 1.5)
-text(-0.5, 2.5, "Season-Tuning", col = "#B2182B", cex = 1.5)
-text(-0.5, 2.0, "yearly corr.", col = "black", cex = 1.5)
+text(-1, 1,   adj = 0, "Season-Tuning", col = "#B2182B", cex = 1.5)
+text(-1, 0.5, adj = 0, "yearly corr.", col = "black", cex = 1.5)
 mtext(text = TeX("$\\rho (T, \\delta^{18}O)$"), side = 3, line = -2, adj = 1,col = "black", cex = 1.5, at = 1)
 text(1, 2.75, paste0("DJF: ", floor(sum(what_season$TEMP == "WINTER", na.rm = T)/3)), col = "black", cex = 1.5, adj = 1)
 text(1, 2.25, paste0("MAM: ", floor(sum(what_season$TEMP == "SPRING", na.rm = T)/3)), col = "black", cex = 1.5, adj = 1)

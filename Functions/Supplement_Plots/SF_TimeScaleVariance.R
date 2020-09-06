@@ -130,13 +130,13 @@ for(plot in 1:1){
         c(0, max(density(log10(VARIANCE$rec_long), na.rm = T)$y)-0.01),
         lwd = 2, col = "#B2182B", lty = 2)
   mtext(text = "density",side = 2,line = 2.5, cex = cex_text)
-  text(log10(0.1), 4, "long (50-200y)", col = "#B2182B", cex = cex_axis)
-  text(log10(0.1), 3, "short (10-50y)", col = "black", cex = cex_axis)
+  text(log10(0.01), 4, "long (50-200y)", col = "#B2182B", cex = cex_axis, adj = 0)
+  text(log10(0.01), 3.5, "short (10-50y)", col = "black", cex = cex_axis, adj = 0)
   
-  text(log10(0.01), 4, paste0("#Records: ", length(na.omit(VARIANCE$rec_long))), col = "#B2182B", cex = cex_axis, adj = 0)
-  text(log10(0.01), 3, paste0("#Records: ", length(na.omit(VARIANCE$rec_short))), col = "black", cex = cex_axis, adj = 0)
+  text(log10(0.01), 1, paste0("#Records: ", length(na.omit(VARIANCE$rec_long))), col = "#B2182B", cex = cex_axis, adj = 0)
+  text(log10(0.01), 0.5, paste0("#Records: ", length(na.omit(VARIANCE$rec_short))), col = "black", cex = cex_axis, adj = 0)
   
-  mtext(text = "Record", side = 3, line = -2, adj = 1,col = "black", cex = cex_text, at = log10(1))
+  mtext(text = "Records", side = 3, line = -2, adj = 1,col = "black", cex = cex_text, at = log10(1))
   mtext(text = "(a)", side = 3, line = -2, adj = 0,col = "black", cex = cex_text, at = log10(0.01))
   
   hist(log10(VARIANCE$sim_full_short), 
@@ -156,10 +156,10 @@ for(plot in 1:1){
         c(0, max(density(log10(VARIANCE$sim_full_long), na.rm = T)$y)-0.01),
         lwd = 2, col = "#B2182B", lty = 2)
   mtext(text = "density",side = 2,line = 2.5, cex = cex_text)
-  mtext(text = "Sim full", side = 3, line = -2, adj = 1,col = "black", cex = cex_text, at = log10(1))
+  mtext(text = "full simulation", side = 3, line = -2, adj = 1,col = "black", cex = cex_text, at = log10(1))
   mtext(text = "(b)", side = 3, line = -2, adj = 0,col = "black", cex = cex_text, at = log10(0.01))
-  text(log10(0.01), 4, paste0("#Records: ", length(na.omit(VARIANCE$sim_full_long))), col = "#B2182B", cex = cex_axis, adj = 0)
-  text(log10(0.01), 3, paste0("#Records: ", length(na.omit(VARIANCE$sim_full_short))), col = "black", cex = cex_axis, adj = 0)
+  text(log10(0.01), 1, paste0("#Records: ", length(na.omit(VARIANCE$sim_full_long))), col = "#B2182B", cex = cex_axis, adj = 0)
+  text(log10(0.01), 0.5, paste0("#Records: ", length(na.omit(VARIANCE$sim_full_short))), col = "black", cex = cex_axis, adj = 0)
   
   hist(log10(VARIANCE$sim_down_short), 
        breaks = 9, border = "white", prob = TRUE, 
@@ -178,12 +178,12 @@ for(plot in 1:1){
         c(0, max(density(log10(VARIANCE$sim_down_long), na.rm = T)$y)-0.01),
         lwd = 2, col = "#B2182B", lty = 2)
   mtext(text = "density",side = 2,line = 2.5, cex = cex_text)
-  mtext(text = "Sim down", side = 3, line = -2, adj = 1,col = "black", cex = cex_text, at = log10(1))
-  mtext(text = "var.tsc(d18Opw)/var.tot(d18Opw)",side = 1,line = 2.7, cex = cex_text)
+  mtext(text = "down-sampled simulation", side = 3, line = -2, adj = 1,col = "black", cex = cex_text, at = log10(1))
+  mtext(text = "time-scale variance / total variance",side = 1,line = 2.7, cex = cex_text)
   mtext(text = "(c)", side = 3, line = -2, adj = 0,col = "black", cex = cex_text, at = log10(0.01))
   
-  text(log10(0.01), 4, paste0("#Records: ", length(na.omit(VARIANCE$sim_down_long))), col = "#B2182B", cex = cex_axis, adj = 0)
-  text(log10(0.01), 3, paste0("#Records: ", length(na.omit(VARIANCE$sim_down_short))), col = "black", cex = cex_axis, adj = 0)
+  text(log10(0.01), 1, paste0("#Records: ", length(na.omit(VARIANCE$sim_down_long))), col = "#B2182B", cex = cex_axis, adj = 0)
+  text(log10(0.01), 0.5, paste0("#Records: ", length(na.omit(VARIANCE$sim_down_short))), col = "black", cex = cex_axis, adj = 0)
   
   
   dev.off()

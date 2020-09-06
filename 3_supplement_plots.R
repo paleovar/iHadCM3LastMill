@@ -23,7 +23,7 @@ source("Functions/Supplement_Plots/Vegetation_Plot.R")
 source("Functions/Supplement_Plots/SF_ScatterPlot_Variance.R")
 
 # SF5: All Spectra of records. 
-source("Functions/Supplement_Plots/SF15_AllSpectra.R")
+source("Functions/Supplement_Plots/SF_AllSpectra.R")
 
 # SF7: Network Plot with yearly resolution
 #--> already in paper plot 8!!!
@@ -33,7 +33,7 @@ print("In Functions/Paper_Plots/Fig8_Network.R")
 source("Functions/Supplement_Plots/SF_Network_ClusterMap.R")
 
 # SF12: Time scale dependent variance histogram
-source("Functions/Supplement_Plots/SF2_TimeScaleVariance.R")
+source("Functions/Supplement_Plots/SF_TimeScaleVariance.R")
 
 # SF13: Season correlation map with strongest season
 # SF15: Season Tuned correlation map
