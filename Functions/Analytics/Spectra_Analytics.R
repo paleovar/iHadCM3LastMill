@@ -26,7 +26,7 @@ entities_lats <- list()
 for(ii in 1:length(DATA_past1000$CAVES$entity_info$entity_id[mask_spec])){
   entity = DATA_past1000$CAVES$entity_info$entity_id[mask_spec][ii]
   data_rec = DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
-  if(length(data_rec$interp_age) > 8 & mask_spec[ii] & entity != 351){
+  if(length(data_rec$interp_age) > 8 & entity != 351){
     #85 -> eID351 der Quatsch macht allgemein
     entities_spec = c(entities_spec, entity)
     entities_lats = c(entities_lats, DATA_past1000$CAVES$entity_info$latitude[ii])
