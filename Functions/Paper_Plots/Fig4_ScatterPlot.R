@@ -170,7 +170,7 @@ mtext(text = "(f)", side = 3, line = -1.5, adj = 0.02, cex = 1)
 
 #DJF prec
 plot(scatter_data$winter_mean_prec[mask_mean_calcite], scatter_data$diff_down[mask_mean_calcite], 
-     yaxt = 'n', xlab = "", ylab = "", xlim = c(0.4,15), log = "x", ylim = c(-10,10), yaxt = "n", panel.first = grid(equilogs = FALSE),
+     yaxt = 'n', xlab = "", ylab = "", xlim = c(0.2,15), log = "x", ylim = c(-10,10), yaxt = "n", panel.first = grid(equilogs = FALSE),
      pch = 16, col = adjustcolor("black", alpha.f = 0.5), cex = 2, cex.axis = cexaxis)
 abline(h=0)
 points(scatter_data$winter_mean_prec[mask_mean_aragonite], scatter_data$diff_down[mask_mean_aragonite],
@@ -184,7 +184,7 @@ mtext(text = "(g)", side = 3, line = -1.5, adj = 0.02, cex = 1)
 
 #JJA prec
 plot(scatter_data$summer_mean_prec[mask_mean_calcite], scatter_data$diff_down[mask_mean_calcite], 
-     yaxt = 'n', xlab = "", ylab = "", xlim = c(0.4,15), log = "x", ylim = c(-10,10), yaxt = "n", panel.first = grid(equilogs = FALSE),
+     yaxt = 'n', xlab = "", ylab = "", xlim = c(0.2,15), log = "x", ylim = c(-10,10), yaxt = "n", panel.first = grid(equilogs = FALSE),
      pch = 16, col = adjustcolor("black", alpha.f = 0.5), cex = 2, cex.axis = cexaxis)
 abline(h=0)
 points(scatter_data$summer_mean_prec[mask_mean_aragonite], scatter_data$diff_down[mask_mean_aragonite],

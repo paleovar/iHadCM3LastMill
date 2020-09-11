@@ -63,7 +63,7 @@ for(ii in 1:54){
   if(ii %in% c(49,50,51,52,53,54)){
     axis(1,at=seq(0,1100,by=200),labels=FALSE,col="black")
     mtext(side=1,at=seq(0,1100,by=200),seq(0,1100,by=200),line = 1.5, cex=cex_text,col="black")
-    mtext("years BP", side = 1, line= 3, cex = 0.8)
+    mtext("years BP", side = 1, line= 3, cex = cex_text)
   }
   
   if(ii<27){
@@ -89,7 +89,7 @@ for(ii in 1:54){
 dev.off()
 
 cairo_pdf(file = paste0("Sup_Plots/SF_TS_55-106_",var,".pdf"), width = 21, height = 29.7)
-par(mfrow=c(9,6),oma = c(4,4,0,0) + 0.1,mar = c(0,0,1,1) + 0.1)
+par(mfrow=c(9,6),oma = c(4,5,0,0) + 0.1,mar = c(0,0,1,1) + 0.1)
 for(ii in 55:104){
   entity = DATA_past1000$CAVES$entity_info$entity_id[mask_mean][ii]
   data_rec <- DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
