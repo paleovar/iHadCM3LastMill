@@ -83,8 +83,8 @@ for(var in c("ISOT", "ITPC")){
   
   GLOBAL_STACY_OPTIONS$GLOBAL_POINT_SIZE = 4
   
-  leg_name = expression(paste(delta^{plain(18)}, plain(O), " (%)"))
-  if(var == "ITPC"){leg_name = expression(paste(delta^{plain(18)}, plain(O)[plain(pw)], " (%)"))}
+  leg_name = expression(paste(delta^{plain(18)}, plain(O), " (permil)"))
+  if(var == "ITPC"){leg_name = expression(paste(delta^{plain(18)}, plain(O)[plain(pw)], " (permil)"))}
   
   plot_isot <- STACYmap_isot(gridlyr = Plot_lyr3,
                              ptlyr = Point_Lyr,
@@ -127,8 +127,8 @@ for(var in c("ISOT", "ITPC")){
   
   ptlyr <- projection_ptlyr(CAVElyr_diff_used, as.character('+proj=robin +datum=WGS84'))
   
-  leg_name = expression(paste(delta^{plain(18)}, plain(O)[plain(sim)]," - ", delta^{plain(18)}, plain(O)[plain(rec)], " (%)"))
-  if(var == "ITPC"){leg_name = expression(paste(delta^{plain(18)}, plain(O)["sim,pw"]," - ", delta^{plain(18)}, plain(O)[plain(rec)], " (%)"))}
+  leg_name = expression(paste(delta^{plain(18)}, plain(O)[plain(sim)]," - ", delta^{plain(18)}, plain(O)[plain(rec)], " (permil)"))
+  if(var == "ITPC"){leg_name = expression(paste(delta^{plain(18)}, plain(O)["sim,pw"]," - ", delta^{plain(18)}, plain(O)[plain(rec)], " (permil)"))}
   
   plot_diff <- STACYmap(coastline = TRUE) +
     geom_point(data = ptlyr, aes(x = long, y = lat, fill = layer), shape = 21, alpha = 0.8, color = "black",

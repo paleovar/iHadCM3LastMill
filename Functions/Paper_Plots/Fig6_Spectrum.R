@@ -96,7 +96,7 @@ for(var in c("ISOT", "ITPC")){
         xlab = "", lwd = 2)
   LLines(LogSmooth(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_",var)]]$spec), col = COLZ[1], lw = 3)#,
   mtext("Period (y)", side = 1, line= 2, cex = cex_axis_text)
-  mtext(expression("PSD [‰"^"2"*"/year]"), side = 4, line= 2, at = 1, las = 0, cex = cex_axis_text)
+  mtext(expression("PSD [‰"^"2"*"year]"), side = 4, line= 2, at = 1, las = 0, cex = cex_axis_text)
   LLines(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_down_",var)]]$spec, col = COLZ[2], lty = 3, lw = 2)
   LLines(LogSmooth(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_down_",var)]]$spec), col = COLZ[2], lw = 2)
   LLines(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_rec_",var)]]$spec, col = COLZ[3], lty = 3, lw = 2)
