@@ -61,18 +61,6 @@ load_natural_earth_data <- function(file, dir = 'Functions/naturalearth_10m_phys
   return(data)
 }
 
-# load_natural_earth_data <- function(file, dir = '/home/ginnyweasley/07_R_Code/naturalearth_10m_physical', ...) {
-#   NAT_EARTH_PATH <- '/home/ginnyweasley/07_R_Code/naturalearth_10m_physical'
-#   if (dir == NAT_EARTH_PATH & str_detect(file, '.shp')) {
-#     data <- readOGR(dsn = file.path(NAT_EARTH_PATH, file), verbose = FALSE, ...)
-#   } else if (str_detect(file, '.shp')) {
-#     data <- readOGR(dsn = file.path(dir, file), verbose = FALSE, ...)
-#   } else if (str_detect(file, '.tif')) {
-#     data <- raster::raster(x = file.path(NAT_EARTH_PATH, file))
-#   }
-#   return(data)
-# }
-
 
 transform_shapefile <- function(data, transform) {
   if (transform == 'fixed') {
@@ -154,7 +142,8 @@ STACYmap_NA <- function(gridlyr = NULL,
                      transpose = TRUE, 
                      rotate = FALSE,
                      box = TRUE, 
-                     NA_color = "black") {
+                     NA_color = "black",
+                     allmax = NULL) {
   # TODO enable lapply -> option to pass multiple gridlyr, plgnlyr, ptlyr as a list
   # TODO enable colourbar
   # TODO datum
@@ -334,6 +323,9 @@ STACYmap_NA <- function(gridlyr = NULL,
       }
       lims <- list(
         grid = c(-allmx, allmx), pt = c(-allmx, allmx)
+      )
+    } else if(!is.null(allmax)){
+      lims <- list(grid = c(-allmax, allmax), pt = c(-allmax, allmax)
       )
     } else if(!is.null(gridlyro) & !is.null(ptlyro)) {
       if (class(gridlyro) == 'raster') {
