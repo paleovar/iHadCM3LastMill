@@ -221,8 +221,8 @@ for(analysis in 1:1){
   for (i in 1:1000){
     bstrap <- c(bstrap,median(sample(VARIANCE$sim_down_filter_long_spec/VARIANCE$sim_down_long_spec,length(VARIANCE$sim_down_long_spec),replace=T), na.rm = T))
   }
-  print(paste0("On longer timescales(<50y), the filter reduces the variance to ", round(median(VARIANCE$sim_down_filter_long_spec/VARIANCE$sim_down_long_spec, na.rm = T), digits = No.digits),
-               " (", round(quantile(bstrap,0.05), digits = No.digits), ", ", round(quantile(bstrap,0.95), digits = No.digits), ") of the unfiltered variance."))
+  print(paste0("On longer timescales(<50y), the filter reduces the variance to ", round(median(VARIANCE$sim_down_filter_long_spec/VARIANCE$sim_down_long_spec, na.rm = T), digits = (No.digits+1)),
+               " (", round(quantile(bstrap,0.05), digits = No.digits+1), ", ", round(quantile(bstrap,0.95), digits = No.digits+1), ") of the unfiltered variance."))
   
   
   

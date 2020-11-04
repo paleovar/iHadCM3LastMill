@@ -51,12 +51,17 @@ for(var in c("TEMP", "PREC")){
       
       CORR_CAVE[[paste0("CORR_",var)]][ii] = COR$rxy
       CORR_CAVE[[paste0("p_",var)]][ii] = COR$pval
+      CORR_CAVE[[paste0("neff_",var)]][ii] = COR$neff
     }else{
       CORR_CAVE[[paste0("CORR_",var)]][ii] = NA
       CORR_CAVE[[paste0("p_",var)]][ii] = NA
+      CORR_CAVE[[paste0("neff_",var)]][ii] = NA
     }
   }
 }
+
+print(paste0("For temperature, the range of degrees of freedom for the speleothem correlations is (", range(CORR_CAVE$neff_TEMP, na.rm = T)[1], ", ", range(CORR_CAVE$neff_TEMP, na.rm = T)[2], ")"))
+print(paste0("For precipitation, the range of degrees of freedom for the speleothem correlation is (", range(CORR_CAVE$neff_PREC, na.rm = T)[1], ", ", range(CORR_CAVE$neff_PREC, na.rm = T)[2], ")"))
 
 
 
@@ -137,4 +142,4 @@ plot  %>% ggsave(filename = paste0('Fig7_Correlation_xnap',run, '.png'), plot = 
 
 remove(COR, double_time, plot, Plot_lyr_prec, Plot_lyr_prec_p, Plot_lyr_temp, Plot_lyr_temp_p, plot_prec, plot_temp, Point_Lyr_prec, Point_Lyr_temp)
 remove(entity, ii, record, run, sim, var, Point_Lyr_prec_not, Point_Lyr_prec_not_p, Point_Lyr_prec_p, Point_Lyr_temp_not, Point_Lyr_temp_not_p, Point_Lyr_temp_p)
-remove(CORR, CORR_CAVE, CORR_FIELD, data_rec, NA_plot_lyr,lon,lat)
+remove(CORR, COR_CAVE, CORR_FIELD, data_rec, NA_plot_lyr,lon,lat)
