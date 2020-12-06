@@ -7,6 +7,7 @@
 # Variances for simulation and for proxy:
 
 VARIANCE <- list(
+  entity_id = numeric(length(DATA_past1000$CAVES$entity_info$entity_id)),
   var_d18Oc = numeric(length(DATA_past1000$CAVES$entity_info$entity_id)),
   var_proxy_a = numeric(length(DATA_past1000$CAVES$entity_info$entity_id)),
   var_proxy_b = numeric(length(DATA_past1000$CAVES$entity_info$entity_id)),
@@ -31,6 +32,7 @@ for(ii in 1:length(DATA_past1000$CAVES$entity_info$entity_id)){
   data_yearly_a = DATA_past1000$CAVES$yearly_res$a %>% filter(entity_id == entity)
   data_yearly_b = DATA_past1000$CAVES$yearly_res$b %>% filter(entity_id == entity)
   data_yearly_c = DATA_past1000$CAVES$yearly_res$c %>% filter(entity_id == entity)
+  VARIANCE$entity_id[ii] = entity
   VARIANCE$var_d18Oc[ii] = var(data_rec$d18O_measurement, na.rm = T)
   VARIANCE$var_proxy_a[ii] = var(data_rec$d18O_dw_eq_a, na.rm = T)
   VARIANCE$var_proxy_b[ii] = var(data_rec$d18O_dw_eq_b, na.rm = T)

@@ -106,8 +106,8 @@ for(cluster in c(6,2,3,5)){
   
   for (i in 1:(length(TS_rec)-1)){
     for (j in (i+1):length(TS_rec)){
-      temp<-nest::nexcf_ci(TS_rec[[i]],TS_rec[[j]],conflevel=0.1)
-      temp_sim <- nest::nexcf_ci(TS_sim[[i]],TS_sim[[j]],conflevel=0.1)
+      temp<-nest::nexcf_ci(na.omit(TS_rec[[i]]),na.omit(TS_rec[[j]]),conflevel=0.1)
+      temp_sim <- nest::nexcf_ci(na.omit(TS_sim[[i]]),na.omit(TS_sim[[j]]),conflevel=0.1)
       C_rec[i,j]<-temp$rxy
       P_rec[i,j]<-P_rec[j,i]<-temp$pval
       C_rec[j,i]=C_rec[i,j]
@@ -127,9 +127,9 @@ for(cluster in c(6,2,3,5)){
   )
   
   network_lyr_sim <- C_sim
-  network_lyr_sim[P_sim > 0.1] = NA
+  #network_lyr_sim[P_sim > 0.1] = NA
   network_lyr_rec <- C_rec
-  network_lyr_rec[P_rec> 0.1] = NA
+  #network_lyr_rec[P_rec> 0.1] = NA
   
   network_sim <- as.matrix(C_sim)
   network_corplot <- C_rec
@@ -184,7 +184,7 @@ for(cluster in c(6,2,3,5)){
     corrplot::corrplot(network_corplot, p.mat = network_p, 
                        tl.cex = 1, cl.cex = 1, 
                        pch.cex = 1, number.cex = 1, tl.col = "black",
-                       col = rev(RColorBrewer::brewer.pal(10, 'RdBu')), na.label = " ")
+                       col = rev(RColorBrewer::brewer.pal(10, 'RdBu')), na.label = " ", sig.level = 0.1)
     segments(plot_data$box_corr[1],plot_data$box_corr[4],plot_data$box_corr[2],plot_data$box_corr[4], lwd=3, col="black")
     segments(plot_data$box_corr[1],plot_data$box_corr[3],plot_data$box_corr[2],plot_data$box_corr[3], lwd=3, col="black")
     segments(plot_data$box_corr[1],plot_data$box_corr[3],plot_data$box_corr[1],plot_data$box_corr[4], lwd=3, col="black")

@@ -33,6 +33,12 @@ CORR_CAVE <- list(entity_id = numeric(length(DATA_past1000$CAVES$entity_info$ent
                   lon = numeric(length(DATA_past1000$CAVES$entity_info$entity_id[mask_var])),
                   lat = numeric(length(DATA_past1000$CAVES$entity_info$entity_id[mask_var])))
 
+DATA_Rec <- DATA_past1000$CAVES$record_res %>%  mutate(d18O_ens = (d18O_dw_eq_a+d18O_dw_eq_b+d18O_dw_eq_c)/3,
+                                                       temp_ens = (TEMP_a+TEMP_b+TEMP_c)/3,
+                                                       prec_ens = (PREC_a+PREC_b+PREC_c)/3,
+                                                       isot_ens = (ISOT_a+ISOT_b+ISOT_c)/3) %>% 
+  select(site_id, entity_id, interp_age, d18O_measurement, d18O_ens, temp_ens, prec_ens, isot_ens)
+
 for(var in c("TEMP", "PREC")){
   CORR_CAVE[[paste0("CORR_",var)]] <- numeric(length(DATA_past1000$CAVES$entity_info$entity_id[mask_var]))
   CORR_CAVE[[paste0("p_", var)]] <- numeric(length(DATA_past1000$CAVES$entity_info$entity_id[mask_var]))
@@ -41,13 +47,13 @@ for(var in c("TEMP", "PREC")){
     CORR_CAVE$entity_id[ii] = entity
     CORR_CAVE$lon[ii] = DATA_past1000$CAVES$entity_info$longitude[mask_var][ii]
     CORR_CAVE$lat[ii] = DATA_past1000$CAVES$entity_info$latitude[mask_var][ii]
-    data_rec = DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
+    data_rec = DATA_Rec %>% filter(entity_id == entity)
     # zoo cannot handle objects where order.by has two elements which is why they are sorted out here (no better option found)
     double_time <- data_rec %>% group_by(interp_age) %>% count() %>% filter(n>1)
     data_rec <- data_rec %>% filter(!interp_age %in% double_time$interp_age)
     if(length(data_rec$interp_age)>4){
       record = zoo(x = data_rec$d18O_measurement, order.by = data_rec$interp_age)
-      sim = zoo(x = data_rec[[paste0(var,"_", run)]], order.by = data_rec$interp_age)
+      sim = zoo(x = data_rec[[paste0(tolower(var),"_ens")]], order.by = data_rec$interp_age)
       COR <- nexcf_ci(record, sim)
       
       CORR_CAVE[[paste0("CORR_",var)]][ii] = COR$rxy
@@ -62,18 +68,6 @@ for(var in c("TEMP", "PREC")){
     }
   }
 }
-
-print(paste0("For temperature, the range of degrees of freedom for the speleothem correlations is (", range(CORR_CAVE$neff_TEMP, na.rm = T)[1], ", ", range(CORR_CAVE$neff_TEMP, na.rm = T)[2], ")"))
-print(paste0("For precipitation, the range of degrees of freedom for the speleothem correlation is (", range(CORR_CAVE$neff_PREC, na.rm = T)[1], ", ", range(CORR_CAVE$neff_PREC, na.rm = T)[2], ")"))
-
-pdf("Sup_Plots/Extra_Fig7_dof_analysis.pdf", width = 10, height = 5)
-par(mfrow = c(1,2))
-hist(CORR_CAVE$neff_PREC, main = "Degrees of freedom", xlab = "dof", ylim = c(0,50))
-hist(CORR_CAVE$neff_ratioPREC, main = "Ratio dof compared to TS length", xlab = "dof/lenth_TS", ylim = c(0,50), xlim = c(0.95,1))
-
-dev.off()
-
-print(paste0("Average nof ratio: ", round(mean(CORR_CAVE$neff_ratioTEMP[CORR_CAVE$p_TEMP<0.1], na.rm = T), digits = No.digits), " neff/length_TS"))
 
 #################################################
 ## PLOTS ########################################
@@ -100,6 +94,9 @@ Point_Lyr_temp_not_p <- projection_ptlyr(as.data.frame(Point_Lyr_temp_not %>% se
 Point_Lyr_prec_not_p <- projection_ptlyr(as.data.frame(Point_Lyr_prec_not %>% select(lon,lat,value)), projection = as.character('+proj=robin +datum=WGS84'))
 Point_Lyr_temp_p <- projection_ptlyr(as.data.frame(Point_Lyr_temp %>% select(lon,lat,value)), projection = as.character('+proj=robin +datum=WGS84'))
 Point_Lyr_prec_p <- projection_ptlyr(as.data.frame(Point_Lyr_prec %>% select(lon,lat,value)), projection = as.character('+proj=robin +datum=WGS84'))
+
+print(paste0("There are ", dim(Point_Lyr_temp)[1], " correlation estimates with p>0.1 with speleo d18O and simulated temp ensemble mean"))
+print(paste0("There are ", dim(Point_Lyr_prec)[1], " correlation estimates with p>0.1 with speleo d18O and simulated prec ensemble mean"))
 
 #Plot
 
@@ -144,9 +141,9 @@ plot <- ggarrange(plot_temp, plot_prec,
                   labels = c("(a)", "(b)"),
                   ncol = 2, nrow = 1)
 
-plot  %>% ggsave(filename = paste0('Fig7_Correlation_xnap',run, '.pdf'), plot = ., path = 'Paper_Plots', 
+plot  %>% ggsave(filename = paste0('SF_Fig7_Correlation_xnap',run, '.pdf'), plot = ., path = 'Sup_Plots', 
                  width = 2*12, height = 12/8.3*PLOTTING_VARIABLES$HEIGHT, units = 'cm', dpi = 'print', device = "pdf")
-plot  %>% ggsave(filename = paste0('Fig7_Correlation_xnap',run, '.png'), plot = ., path = 'Paper_Plots', 
+plot  %>% ggsave(filename = paste0('SF_Fig7_Correlation_xnap',run, '.png'), plot = ., path = 'Sup_Plots', 
                  width = 2*12, height = 12/8.3*PLOTTING_VARIABLES$HEIGHT, units = 'cm', dpi = 'print', device = "png")
 
 
