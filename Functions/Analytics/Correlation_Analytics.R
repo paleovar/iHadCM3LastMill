@@ -1,4 +1,6 @@
+library(plyr)
 library(dplyr)
+library(tidyverse)
 library(latex2exp)
 library(zoo)
 library(PaleoSpec)
@@ -67,13 +69,21 @@ print(paste0("Max Corr Precip: eID", CORR_CAVE$entity_id[CORR_CAVE$p_PREC_a<0.1]
              ", ", round(CORR_CAVE$ci2_PREC_a[CORR_CAVE$p_PREC_a<0.1][which.max(abs(CORR_CAVE$CORR_PREC_a[CORR_CAVE$p_PREC_a<0.1]))], digits = No.digits),")"))
 
 print(paste0("Significant correlation for temperature: (", sum(CORR_CAVE$p_TEMP_a<0.1, na.rm = T), ", ",sum(CORR_CAVE$p_TEMP_b<0.1, na.rm = T), ", ", sum(CORR_CAVE$p_TEMP_c<0.1, na.rm = T), ")"))
-try <- as.data.frame(list(entity = c(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_a<0.1]), na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_b<0.1]), na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_c<0.1])))) %>% group_by(entity) %>% count()
-  
+#try <- as.data.frame(list(entity = c(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_a<0.1]), na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_b<0.1]), na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_c<0.1])))) %>% group_by(entity) %>% count()
+print(paste0(length(unique(c(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_TEMP_a<0.1]), 
+                             na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_TEMP_b<0.1]), 
+                             na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_TEMP_c<0.1])))), " of these correlations are unique."))  
   
 #print(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_a<0.1]))
 #print(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_b<0.1]))
 #print(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_c<0.1]))
 print(paste0("Significant correlation for precipitation: (", sum(CORR_CAVE$p_PREC_a<0.1, na.rm = T), ", ",sum(CORR_CAVE$p_PREC_b<0.1, na.rm = T), ", ", sum(CORR_CAVE$p_PREC_c<0.1, na.rm = T), ")"))
+print(paste0(length(unique(c(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_PREC_a<0.1]), 
+                             na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_PREC_b<0.1]), 
+                             na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_PREC_c<0.1])))), " of these correlations are unique."))
 print(paste0("Significant correlation for d18Opw: (", sum(CORR_CAVE$p_ITPC_a<0.1, na.rm = T), ", ",sum(CORR_CAVE$p_ITPC_b<0.1, na.rm = T), ", ", sum(CORR_CAVE$p_ITPC_c<0.1, na.rm = T), ")"))
+print(paste0(length(unique(c(na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_a<0.1]), 
+                             na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_b<0.1]), 
+                             na.omit(CORR_CAVE$entity_id[CORR_CAVE$p_ITPC_c<0.1])))), " of these correlations are unique."))
 
 rm(COR, data_rec, double_time, entity, ii, No.digits, record, run, sim, var)

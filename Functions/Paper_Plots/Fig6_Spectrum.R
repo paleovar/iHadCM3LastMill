@@ -41,13 +41,14 @@ for(var in c("ISOT", "ITPC")){
   #down->rec
   diff = floor((LastElement(data_rec$interp_age)-FirstElement(data_rec$interp_age))/length(data_rec$interp_age))
   if(diff<1){diff = 1}
-  record <- as.numeric(PaleoSpec::MakeEquidistant(data_rec$interp_age,
-                                       data_rec[[paste0(var,"_a")]],
-                                       time.target = seq(from = FirstElement(data_rec$interp_age), to = LastElement(data_rec$interp_age), by = diff)))
-  Results <- easy_sensor_wm4(diff, rev(na.omit(record)), filter[[var]][3])
-  time_new = seq(LastElement(data_rec$interp_age), LastElement(data_rec$interp_age)-diff*length(Results)+1, by = -1*diff)
-  TS_down_rec = ts(data = rev(Results), start = LastElement(time_new), end = FirstElement(time_new), deltat = diff)
+  Results <- easy_sensor_wm4(1.0, na.omit(data_yearly[[var]]), filter[[var]][3])
+  time_new = seq(FirstElement(data_yearly$year_BP), LastElement(data_yearly$year_BP)-(length(Results)-length(data_yearly$ITPC)), by = -1)
+  data  = filter_window(ts(data = rev(Results), start = LastElement(time_new), end = FirstElement(time_new), deltat = 1))
+  data_ds <- SubsampleTimeseriesBlock_highresNA(data, data_rec$interp_age)
+  TS_down_rec <- na.omit(PaleoSpec::MakeEquidistant(data_rec$interp_age, as.numeric(na.omit(data_ds)),
+                                           time.target = seq(from = FirstElement(data_rec$interp_age), to = LastElement(data_rec$interp_age), by = diff)))
   
+  #Plotting Start!
   cairo_pdf(file = paste0("Paper_Plots/Fig6_Spectra_Compare_Filter_",var,".pdf"), width = PLOTTING_VARIABLES$WIDTH*2/3, height = PLOTTING_VARIABLES$HEIGHT*1.2*2/3)
   #par(mfrow=c(1,2))
   cex_text = 1
@@ -64,8 +65,8 @@ for(var in c("ISOT", "ITPC")){
   
   plot(data_yearly$year_BP, data_yearly[[var]], 
        col = COLZ[1], type = "l", ylim = c(-10,-5.0), xlim = c(0,1100), xaxt = "n", yaxt = "n",ylab = "", xlab = "")
-  lines(window(TS_full_down, start = 110, end = 1100), col = COLZ[2])
-  lines(window(TS_full_rec, start = 100, end = 1050), col = COLZ[3])
+  lines(window(TS_full_down, start = 110, end = 1090), col = COLZ[2])
+  lines(window(TS_full_rec, start = 100, end = 1030), col = COLZ[3])
   axis(2,at=seq(-10,-6,by=1),labels=FALSE,col=COLZ[1])
   mtext(side=2,at=seq(-10,-6,by=1),line = 1, seq(-10,-6,by=1),col=COLZ[1], cex = cex_axis)
   text(1050, -5.5, TeX("HadCM3 at eID 240"), col = COLZ[1], adj = 1, cex = cex_text)
@@ -77,7 +78,7 @@ for(var in c("ISOT", "ITPC")){
   
   plot(data_rec$interp_age, data_rec[[paste0(var,"_a")]],
        col = COLZ[4], type = "l", ylim = c(-10,-5.0), xlim = c(0,1100), xaxt = "n", yaxt = "n",ylab = "", xlab = "")
-  lines(window(TS_down_rec, start = 140, end = 1100), col = COLZ[5])
+  lines(window(TS_down_rec, start = 140, end = 1075), col = COLZ[5])
   axis(2,at=seq(-10,-6,by=1),labels=FALSE,col=COLZ[4])
   mtext(side=2,at=seq(-10,-6,by=1),line = 1, seq(-10,-6,by=1),las=1,col=COLZ[4], cex = cex_axis)
   text(1050, -5.5, TeX("HadCM3 at eID 240 down-sampled"), col = COLZ[4], adj = 1, cex = cex_text)
@@ -96,7 +97,7 @@ for(var in c("ISOT", "ITPC")){
         xlab = "", lwd = 2)
   LLines(LogSmooth(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_",var)]]$spec), col = COLZ[1], lw = 3)#,
   mtext("Period (y)", side = 1, line= 2, cex = cex_axis_text)
-  mtext(expression("PSD [‰"^"2"*"year]"), side = 4, line= 2, at = 1, las = 0, cex = cex_axis_text)
+  mtext(expression("PSD [‰"^"2"*"*year]"), side = 4, line= 2, at = 1, las = 0, cex = cex_axis_text)
   LLines(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_down_",var)]]$spec, col = COLZ[2], lty = 3, lw = 2)
   LLines(LogSmooth(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_down_",var)]]$spec), col = COLZ[2], lw = 2)
   LLines(SPECTRA$MEAN_SPEC_WEIGH[[paste0("SIM_full_rec_",var)]]$spec, col = COLZ[3], lty = 3, lw = 2)
@@ -132,5 +133,5 @@ for(var in c("ISOT", "ITPC")){
   
 }
 
-rm(cex_axis, cex_axis_text, cex_text, COLZ, diff, Results, time_new, data_rec, entity, var, record)
+rm(cex_axis, cex_axis_text, cex_text, COLZ, diff, Results, time_new, data_rec, entity, var)
 rm(TS_down_rec, TS_full_down, TS_full_rec, filter, data_yearly)

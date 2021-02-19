@@ -9,6 +9,8 @@ library(PaleoSpec)
 library(nest)
 library(latex2exp)
 
+source("Functions/SubsampleTimeseriesBlock_highresNA.R")
+
 SPECTRA <- list(
   RECORDS = list(),
   SIM_ds = list("a" = list(),"b" = list(),"c" = list()),
@@ -140,12 +142,15 @@ for(var in c("ISOT","ITPC")){
                                                                            SPECTRA$MEAN_SPEC_WEIGH[[var]]$full[[paste0("SIM_full_",var,"_c")]]$spec))
 }
 
+print("...done with spectra")
 
 #################################################
 ## Sim full FILTER Spectra ######################
 # filtere full Sim signal auf down sim signal
 # filtere full sim signal auf rec signal
 # filtere down sim signal auf rec signal
+
+print("...start filter")
 
 source('Functions/Filter/EASY_Sensor_WM4.R')
 source('Functions/Filter/filter_function3.R')
@@ -165,6 +170,7 @@ filter <- list(
 for(ii in 1:length(SPECTRA$entities_spec_rec)){
   entity = SPECTRA$entities_spec_rec[ii]
   name = paste0("ENTITY", entity)
+  #print(name)
   
   
   for(run in c("a", "b", "c")){
@@ -193,22 +199,34 @@ for(ii in 1:length(SPECTRA$entities_spec_rec)){
     }
   }
   
-  data_rec = DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
-  
   #down->rec
-
-  diff = floor((LastElement(data_rec$interp_age)-FirstElement(data_rec$interp_age))/length(data_rec$interp_age))
-  if(diff<1){diff = 1}
-  
-  for(run in c("a", "b", "c")){
+  for(run in c("a","b","c")){
+    data_yearly = DATA_past1000$CAVES$yearly_res[[run]] %>% filter(entity_id == entity)
+    data_rec = DATA_past1000$CAVES$record_res %>% filter(entity_id == entity)
+    diff = floor((LastElement(data_rec$interp_age)-FirstElement(data_rec$interp_age))/length(data_rec$interp_age))
+    if(diff<1){diff = 1}
     for(var in c("ISOT","ITPC")){
-      record <- PaleoSpec::MakeEquidistant(data_rec$interp_age, data_rec[[paste0(var,"_", run)]],
-                                           time.target = seq(from = FirstElement(data_rec$interp_age), to = LastElement(data_rec$interp_age), by = diff))
-      # to perform easy_sensor_wm4 the data needs to go into the filter, forward in time... that's why the timeseries needs to be reversed
-      Results <- easy_sensor_wm4(diff, na.omit(rev(record)), filter[[var]][3])
-      time_new = seq(LastElement(data_rec$interp_age), LastElement(data_rec$interp_age)-diff*length(Results), by = -1*diff)
-      data = filter_window(ts(data = rev(Results), start = LastElement(time_new), end = FirstElement(time_new), deltat = diff))
-      SPECTRA$SIM_filter_down_rec[[var]][[run]][[name]] = spectrum(data, plot = F)
+      #1)filter on full
+      Results <- easy_sensor_wm4(1.0, na.omit(data_yearly[[var]]), filter[[var]][3])
+      time_new = seq(FirstElement(data_yearly$year_BP), LastElement(data_yearly$year_BP)-(length(Results)-length(data_yearly$ITPC)), by = -1)
+      data  = filter_window(ts(data = rev(Results), start = LastElement(time_new), end = FirstElement(time_new), deltat = 1))
+      #2)full downsample
+      if(length(data_rec$interp_age>1000)){
+        data_ds <- SubsampleTimeseriesBlock_highresNA(data, data_rec$interp_age)
+        value = na.omit(as.numeric(data_ds))
+        time = data_rec$interp_age[!is.na(as.numeric(data_ds))]
+        #3)equidistancing
+        data_ds_eq <- PaleoSpec::MakeEquidistant(time, value,
+                                                 time.target = seq(from = FirstElement(time), to = LastElement(time), by = diff))
+      }else{
+        data_ds <- SubsampleTimeseriesBlock_highresNA(data, data_rec$interp_age)
+        #3)equidistancing
+        data_ds_eq <- PaleoSpec::MakeEquidistant(data_rec$interp_age, as.numeric(na.omit(data_ds)),
+                                                 time.target = seq(from = FirstElement(data_rec$interp_age), to = LastElement(data_rec$interp_age), by = diff))
+      }
+      
+      #4) spectrum
+      SPECTRA$SIM_filter_down_rec[[var]][[run]][[name]] = spectrum(na.omit(data_ds_eq), plot = F)
     }
   }
 }
@@ -235,4 +253,4 @@ for(var in c("ISOT", "ITPC")){
 }
 
 remove(entities_spec, diff, entity, ii, length, length_cave, name, record, Results, run, site, start_ts, stop_ts, var, easy_sensor_wm4, filter_function3,
-       simpleawmean, simpleawsd, data_rec, data_yearly, entities_lats, filter, time_new, data)
+       simpleawmean, simpleawsd, data_rec, data_yearly, entities_lats, filter, time_new, data, time, value, data_ds, data_ds_eq)

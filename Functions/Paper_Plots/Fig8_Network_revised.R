@@ -59,6 +59,12 @@ plot_c_rec[lower.tri(NETWORK$record)] = NA
 
 plot_c_rec_max_e <- c_ensemble
 plot_c_rec_max_e[lower.tri(c_ensemble)] = NA
+load("Data/C_ensemble_max_ds.RData")
+c_ensemble_ds <- C_ds
+rm(C_ds)
+plot_c_rec_max_e_ds <- c_ensemble_ds
+plot_c_rec_max_e_ds[lower.tri(c_ensemble_ds)] = NA
+
 
 boxes_sim_full <- list()
 boxes_sim_down <- list()
@@ -155,8 +161,9 @@ for(ii in 1:20){
 
 
 lo <- loess(plot_c_sim_down[order(plot_dist)] ~ plot_dist[order(plot_dist)], span = 0.2)
-
 lines(lo$x, lo$fitted, lwd = 4, col = col_lines[1])
+lo <- loess(plot_c_rec_max_e_ds[order(plot_dist_e)] ~ plot_dist_e[order(plot_dist_e)], span = 0.2)
+lines(lo$x, lo$fitted, lwd = 4, col = col_lines[2])
 
 #lines(lowess(lowess_dist_sorted,lowess_c_sim_sorted, f=0.1), lwd = 4, col = "#B2182B")
 mtext("(d)", side = 3, adj = 0, cex = namcex, line = -1.5, at = 1000)

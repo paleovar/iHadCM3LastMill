@@ -8,6 +8,6 @@ filter_window <- function(ts_filtered){
     if(rev(ts_filtered)[jj]-mdn<0.5){break}
   }
 
-  return(window(ts_filtered,start = index(ts_filtered)[ii], end = index(ts_filtered)[length(ts_filtered)-(jj+1)]))
+  return(window(ts_filtered,start = index(ts_filtered)[ii], end = index(ts_filtered)[length(ts_filtered)-(jj+3)]))
   
 }
